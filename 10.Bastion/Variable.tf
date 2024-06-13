@@ -1,0 +1,3 @@
+variable "bastion-host" {
+  
+}
