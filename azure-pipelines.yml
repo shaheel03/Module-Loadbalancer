@@ -4,16 +4,16 @@ trigger:
      - main
 
  - task: TerraformInstaller@1
-  inputs:
+   inputs:
     terraformVersion: 'latest'
 
 
  - task: tfsec@1
-  inputs:
+   inputs:
     version: 'v1.26.0'
 
  - task: TerraformTaskV4@4
-  inputs:
+   inputs:
     provider: 'azurerm'
     command: 'init'
     backendServiceArm: 'myserviceconnection'
