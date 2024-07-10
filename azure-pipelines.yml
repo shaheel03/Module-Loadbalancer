@@ -1,0 +1,25 @@
+trigger:
+ branches:
+   include:
+     - main
+
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+  - stage: 
+    jobs:
+      - job: tfsec-code
+        steps:
+
+        - task: tfsec@1
+          inputs:
+            version: 'v1.26.0'
+
+        - task: TerraformInstaller@1
+          inputs:
+           terraformVersion: 'latest'
+
+
+
