@@ -3,52 +3,28 @@ trigger:
    include:
      - main
 
-
-pool:
-  vmImage: ubuntu-latest
-
-stages:
-  - stage: 
-    jobs:
-      - job: tfsec
-        steps:
-
-        - task: tfsec@1
-          inputs:
-            version: 'v1.26.0'
-
-        - task: TerraformInstaller@1
-          inputs:
-           terraformVersion: 'latest'
+ - task: TerraformInstaller@1
+  inputs:
+    terraformVersion: 'latest'
 
 
+ - task: tfsec@1
+  inputs:
+    version: 'v1.26.0'
 
-        - task: TerraformTaskV4@4
-          inputs:
-            provider: 'azurerm'
-            command: 'init'
-            backendServiceArm: 'myserviceconnection'
-            backendAzureRmResourceGroupName: 'jaggy-rg'
-            backendAzureRmStorageAccountName: 'jaggystorage'
-            backendAzureRmContainerName: 'mycontainer'
-            backendAzureRmKey: 'jai.tfstate'
+ - task: TerraformTaskV4@4
+  inputs:
+    provider: 'azurerm'
+    command: 'init'
+    backendServiceArm: 'myserviceconnection'
+    backendAzureRmResourceGroupName: 'jaggy-rg'
+    backendAzureRmStorageAccountName: 'jaggystorage'
+    backendAzureRmContainerName: 'mycontainer'
+    backendAzureRmKey: 'kannu.tfstate'
 
-
-        - task: TerraformTaskV4@4
-          inputs:
-            provider: 'azurerm'
-            command: 'validate'
-            workingDirectory: '$(System.DefaultWorkingDirectory)/0.Module'
-
-        - task: TerraformTaskV4@4
-          inputs:
-            provider: 'azurerm'
-            command: 'plan'
-            environmentServiceNameAzureRM: 'myserviceconnection'
-
-        - task: TerraformTaskV4@4
-          inputs:
-            provider: 'azurerm'
-            command: 'apply'
-            workingDirectory: '$(System.DefaultWorkingDirectory)/0.Module'
-            environmentServiceNameAzureRM: 'myserviceconnection'
+- task: TerraformTaskV4@4
+  inputs:
+    provider: 'azurerm'
+    command: 'apply'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/0.Module'
+    environmentServiceNameAzureRM: 'myserviceconnection'
