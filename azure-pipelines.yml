@@ -10,7 +10,7 @@ pool:
 stages:
   - stage: 
     jobs:
-      - job: tfsec-code
+      - job: tfsec
         steps:
 
         - task: tfsec@1
@@ -23,3 +23,32 @@ stages:
 
 
 
+        - task: TerraformTaskV4@4
+          inputs:
+            provider: 'azurerm'
+            command: 'init'
+            backendServiceArm: 'myserviceconnection'
+            backendAzureRmResourceGroupName: 'jaggy-rg'
+            backendAzureRmStorageAccountName: 'jaggystorage'
+            backendAzureRmContainerName: 'mycontainer'
+            backendAzureRmKey: 'jai.tfstate'
+
+
+        - task: TerraformTaskV4@4
+          inputs:
+            provider: 'azurerm'
+            command: 'validate'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/0.Module'
+
+        - task: TerraformTaskV4@4
+          inputs:
+            provider: 'azurerm'
+            command: 'plan'
+            environmentServiceNameAzureRM: 'myserviceconnection'
+
+        - task: TerraformTaskV4@4
+          inputs:
+            provider: 'azurerm'
+            command: 'apply'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/0.Module'
+            environmentServiceNameAzureRM: 'myserviceconnection'
